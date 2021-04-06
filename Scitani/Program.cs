@@ -10,7 +10,7 @@ namespace Scitani
     {
         static void Main()
         {
-            Pocitani Rada = new Pocitani(3, 6);
+            Pocitani Rada = new Pocitani(1000, 0);
             Console.WriteLine(Rada.ForCycle());
             Console.WriteLine(Rada.WhileCycle());
             Console.WriteLine(Rada.DoWhileCycle());
@@ -24,7 +24,7 @@ namespace Scitani
         double sum = 1d; //Součet řady, vždy bude minimálně 1 (plus to odstraní potíže se sčítáním a odčítáním n-tých pozic)
         double cislo = 0d;
         int i = 1; //Pozice, na kolikátém zlomku jsme
-        public Pocitani(int x, int n) //konstruktor
+        public Pocitani(int x, int n) //konstruktor, zde si vybíráme naše x a n
         {
             X = x;
             N = n;
@@ -62,6 +62,7 @@ namespace Scitani
         {
             sum = 1d; //Vyresetování součtu, protože všude používám tu samou proměnnou
             i = 1; //Vyresetování pozice, protože všude používám tu samou proměnnou
+            if (N == 0) return sum; //V případě, že je naše n 0, zůstane nám pouze jednička
             do
             {
                 cislo = Math.Pow(X, i) / Factorial(i); //Počítání hodnoty čísla na n-té pozici -> čitatel je číslo x umočněné na n, jmenovatel je n faktoriál
