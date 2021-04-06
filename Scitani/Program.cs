@@ -10,7 +10,7 @@ namespace Scitani
     {
         static void Main()
         {
-            Pocitani Rada = new Pocitani(5, 5);
+            Pocitani Rada = new Pocitani(3, 6);
             Console.WriteLine(Rada.ForCycle());
             Console.WriteLine(Rada.WhileCycle());
             Console.WriteLine(Rada.DoWhileCycle());
@@ -23,6 +23,7 @@ namespace Scitani
         public int N { get; set; }
         double sum = 1d; //Součet řady, vždy bude minimálně 1 (plus to odstraní potíže se sčítáním a odčítáním n-tých pozic)
         double cislo = 0d;
+        int i = 1; //Pozice, na kolikátém zlomku jsme
         public Pocitani(int x, int n) //konstruktor
         {
             X = x;
@@ -47,7 +48,7 @@ namespace Scitani
         public double WhileCycle()
         {
             sum = 1d; //Vyresetování součtu, protože všude používám tu samou proměnnou
-            int i = 1; //Pozice, na kolikátém zlomku jsme
+            i = 1; //Vyresetování pozice, protože všude používám tu samou proměnnou
             while (i <= N) //Dokud bude naše pozice menší než N, program se bude opakovat pořád dokola
             {
                 cislo = Math.Pow(X, i) / Factorial(i); //Počítání hodnoty čísla na n-té pozici -> čitatel je číslo x umočněné na n, jmenovatel je n faktoriál
@@ -60,6 +61,14 @@ namespace Scitani
         public double DoWhileCycle()
         {
             sum = 1d; //Vyresetování součtu, protože všude používám tu samou proměnnou
+            i = 1; //Vyresetování pozice, protože všude používám tu samou proměnnou
+            do
+            {
+                cislo = Math.Pow(X, i) / Factorial(i); //Počítání hodnoty čísla na n-té pozici -> čitatel je číslo x umočněné na n, jmenovatel je n faktoriál
+                if (i % 2 == 0) sum -= cislo; //V případě, že jsme na pozici, kde n je sudé číslo, hodnoty se odečítají (u nuly je problém, proto je úplně vyřazená)
+                else sum += cislo; //V případě, že je n liché číslo, se čísla přičítají
+                i++; //Zvýšení pozice o 1 v případě, že ještě nejsme u konce
+            } while (i <= N); //Program se provede v případě, že naše pozice je menší než n
             return sum;
         }
         public double RekurzeCycle()
