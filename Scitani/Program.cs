@@ -10,11 +10,21 @@ namespace Scitani
     {
         static void Main()
         {
-            Pocitani Rada = new Pocitani(1000, 0);
-            Console.WriteLine(Rada.ForCycle());
-            Console.WriteLine(Rada.WhileCycle());
-            Console.WriteLine(Rada.DoWhileCycle());
-            Console.WriteLine(Rada.RekurzeCycle());
+            while (true)
+            {
+                Console.Write("Napište hodnotu X : ");
+                int x = Convert.ToInt32(Console.ReadLine());
+                Console.Write("Napište, do kolikátého členu se počítá (N) : ");
+                int n = Convert.ToInt32(Console.ReadLine());
+                Pocitani Rada = new Pocitani(x, n);
+                Console.WriteLine("Sčítání řady pomocí různých cyklů");
+                Console.WriteLine($"Cyklus for : {Rada.ForCycle()}");
+                Console.WriteLine($"Cyklus while : {Rada.WhileCycle()}");
+                Console.WriteLine($"Cyklus do while : {Rada.DoWhileCycle()}");
+                Console.WriteLine($"Rekurze : {Rada.RekurzeCycle(n)}");
+                Console.ReadKey();
+                Console.Clear();
+            }
         }
     }
     class Pocitani 
@@ -24,6 +34,7 @@ namespace Scitani
         double sum = 1d; //Součet řady, vždy bude minimálně 1 (plus to odstraní potíže se sčítáním a odčítáním n-tých pozic)
         double cislo = 0d;
         int i = 1; //Pozice, na kolikátém zlomku jsme
+        double SoucetRekurze = 1d; //Celkový součet u rekurze -> nutná nová proměnná kvůli znemožnění resetu proměnné
         public Pocitani(int x, int n) //konstruktor, zde si vybíráme naše x a n
         {
             X = x;
@@ -72,10 +83,18 @@ namespace Scitani
             } while (i <= N); //Program se provede v případě, že naše pozice je menší než n
             return sum;
         }
-        public double RekurzeCycle()
+        public double RekurzeCycle(int PoziceRekurze) //Pozice v řadě u rekurze -> nutná nová proměnná kvůli znemožnění resetu proměnné
         {
-            sum = 1d; //Vyresetování součtu, protože všude používám tu samou proměnnou
-            return sum;
+            if (PoziceRekurze == 0) return SoucetRekurze;
+            cislo = Math.Pow(X, PoziceRekurze) / Factorial(PoziceRekurze); //Počítání hodnoty čísla na n-té pozici -> čitatel je číslo x umočněné na n, jmenovatel je n faktoriál
+            if (PoziceRekurze % 2 == 0) SoucetRekurze -= cislo; //V případě, že jsme na pozici, kde n je sudé číslo, hodnoty se odečítají (u nuly je problém, proto je úplně vyřazená)
+            else SoucetRekurze += cislo; //V případě, že je n liché číslo, se čísla přičítají
+            if (PoziceRekurze != N) //Do doby, pokud se nedostaneme na konečnou pozici v řadě, cyklus se bude opakovat
+            {
+                ++PoziceRekurze; //Zvýšení pozice v rekurzi o 1
+                return RekurzeCycle(PoziceRekurze); //Sčítání číselné řady, dokud se nedostaneme k výsledku
+            }
+            return SoucetRekurze;
         }
     }
 }
